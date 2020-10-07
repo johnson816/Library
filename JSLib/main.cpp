@@ -1,12 +1,11 @@
 #include <iostream>
 #include "Object.h"
-#include "List.h"
+#include "SeqList.h"
 
 using namespace std;
 using namespace JSLib;
 
 int main()
 {
-    List<int>* sp = NULL;
     return 0;
 }
