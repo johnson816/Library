@@ -11,5 +11,6 @@ HEADERS += \
     Exception.h \
     Object.h \
     List.h \
-    SeqList.h
+    SeqList.h \
+    StaticList.h
 
