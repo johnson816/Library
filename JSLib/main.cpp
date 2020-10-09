@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Object.h"
-#include "SeqList.h"
+#include "StaticList.h"
+#include "Exception.h"
 
 using namespace std;
 using namespace JSLib;

@@ -12,7 +12,7 @@ class SeqList : public List<T>
 {
 protected:
     T* m_array;          //顺序存储空间
-    T* m_length;         //线性表长度
+    int m_length;         //线性表长度
 public:
     bool insert(int i,const T& obj)
     {
@@ -20,7 +20,7 @@ public:
         ret = (ret) && (m_length < capacity());
         if(ret)
         {
-            for(int p=m_length-1;p>i;p--)
+            for(int p=m_length-1;p>=i;p--)
             {
                 m_array[p + 1] = m_array[p];
             }
