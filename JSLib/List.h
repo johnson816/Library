@@ -10,7 +10,12 @@ template <typename T>
 class List : public Object
 {
 
+protected:
+    List(const List&);
+    List& operator =(const List&);
+    List() {}
 public:
+    virtual bool insert(const T& obj) = 0;
     virtual bool insert(int i,const T& obj) = 0;
     virtual bool remove(int i) = 0;
     virtual bool get(int i,T& obj) const = 0;

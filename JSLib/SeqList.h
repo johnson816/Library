@@ -14,6 +14,11 @@ protected:
     T* m_array;          //顺序存储空间
     int m_length;         //线性表长度
 public:
+    bool insert(const T& obj)
+    {
+        return insert(m_length,obj);
+    }
+
     bool insert(int i,const T& obj)
     {
         bool ret = ((0 <= i) && (i <=m_length));
