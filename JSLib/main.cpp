@@ -1,13 +1,10 @@
 #include <iostream>
-#include "Object.h"
-#include "DynamicList.h"
-#include "Exception.h"
+#include "StaticArray.h"
 
 using namespace std;
 using namespace JSLib;
 
 int main()
 {
-
     return 0;
 }
