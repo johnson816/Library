@@ -1,8 +1,9 @@
 #include <iostream>
-#include "DynamicArray.h"
+#include "LinkList.h"
 
 using namespace std;
 using namespace JSLib;
+
 
 int main()
 {
