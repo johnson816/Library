@@ -16,11 +16,13 @@ protected:
         T value;
         Node* next;
     };
-    mutable struct
+
+    mutable struct : public Object
     {
         char reserve[sizeof(T)];
         Node* next;
     }m_header;
+
     int m_length;
     Node* position(int i)  const
     {
@@ -123,6 +125,27 @@ public:
         else
         {
             THROWEXCEPTION(IndexOutOfBoundsException,"parameter i is invald");
+        }
+        return ret;
+    }
+
+    int find(const T& e) const
+    {
+        int ret = -1;
+        int i = 0;
+        Node* pNode = m_header.next;
+        while(pNode)
+        {
+            if(pNode->value == e)
+            {
+                ret = i;
+                break;
+            }
+            else
+            {
+                pNode = pNode->next;
+                i++;
+            }
         }
         return ret;
     }
