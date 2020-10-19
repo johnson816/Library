@@ -28,6 +28,16 @@ void Object::operator delete[](void* p)
     p = NULL;
 }
 
+bool Object::operator == (const Object& obj)
+{
+    return (this == &obj);
+}
+
+bool Object::operator != (const Object& obj)
+{
+    return (this != &obj);
+}
+
 Object:: ~Object()
 {
 
