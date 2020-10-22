@@ -24,6 +24,9 @@ protected:
     }m_header;
 
     int m_length;
+    Node* m_current;
+    int m_step;
+
     Node* position(int i)  const
     {
         Node* ret = reinterpret_cast<Node*>(&m_header);
@@ -32,6 +35,16 @@ protected:
             ret = ret->next;
         }
         return ret;
+    }
+
+    virtual Node* creat()
+    {
+        return new Node();
+    }
+
+    virtual void destroy(Node* pn)
+    {
+        delete pn;
     }
 
 public:
@@ -51,7 +64,7 @@ public:
         bool ret = ((0 <= i) && (i <= m_length));
         if(ret)
         {
-            Node* tem = new Node();
+            Node* tem = creat();
             if(tem != NULL)
             {
                 Node* current = position(i);
@@ -77,7 +90,7 @@ public:
             Node* current = position(i);
             Node * toDel = current->next;
             current->next = toDel->next;
-            delete toDel;
+            destroy(toDel);
             m_length--;
         }
         else
@@ -154,13 +167,53 @@ public:
     {
         return m_length;
     }
+
+    bool move(int i,int step = 1)
+    {
+        bool ret = (0 <= i) && (i < m_length) && (step > 0);
+        if(ret)
+        {
+            m_current = position(i)->next;
+            m_step = step;
+        }
+        return ret;
+    }
+
+    bool end()
+    {
+        return(m_current == NULL);
+    }
+
+    T current()
+    {
+        if(!end())
+        {
+            return m_current->value;
+        }
+        else
+        {
+            THROWEXCEPTION(InvalidParameterException,"No value at current position");
+        }
+    }
+
+    bool next()
+    {
+        int i =0;
+        while((i < m_step) && (!end()))
+        {
+            m_current = m_current->next;
+            i++;
+        }
+        return (i == m_step);
+    }
+
     void clear()
     {
         while(m_header.next)
         {
             Node *toDel = m_header.next;
             m_header.next = toDel->next;
-            delete toDel;
+            destroy(toDel);
         }
         m_length = 0;
     }
