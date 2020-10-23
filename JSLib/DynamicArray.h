@@ -60,7 +60,7 @@ protected:
     }
 
 public:
-    DynamicArray(int length)
+    DynamicArray(int length = 0)
     {
         Init(new T[length],length);
     }

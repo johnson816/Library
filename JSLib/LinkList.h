@@ -89,9 +89,13 @@ public:
         {
             Node* current = position(i);
             Node * toDel = current->next;
+            if(m_current == toDel)
+            {
+                m_current = toDel->next;
+            }
             current->next = toDel->next;
-            destroy(toDel);
             m_length--;
+            destroy(toDel);           
         }
         else
         {
@@ -213,9 +217,9 @@ public:
         {
             Node *toDel = m_header.next;
             m_header.next = toDel->next;
+            m_length--;
             destroy(toDel);
-        }
-        m_length = 0;
+        }  
     }
     ~LinkList()
     {

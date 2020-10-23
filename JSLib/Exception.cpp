@@ -18,7 +18,8 @@ namespace JSLib
     /****够的堆内存而造成死循环                                    ****/
 void Exception::Init(const char* message,const char* file,int line)
 {
-    m_message = strdup(message);
+    m_message = (message ? strdup(message) : NULL);
+    //m_message =  strdup(message);
     if(file != NULL)
     {
         char ac[16];

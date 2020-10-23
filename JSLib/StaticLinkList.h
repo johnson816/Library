@@ -49,6 +49,7 @@ protected:
             {
                 m_used[i] = 0;
                 pd->~SNode();
+                break;
             }
         }
     }
@@ -66,7 +67,7 @@ public:
     }
     ~StaticLinkList()
     {
-        StaticLinkList::clear();
+        this->clear();
     }
 };
 
