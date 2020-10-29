@@ -1,6 +1,5 @@
 #include <iostream>
-#include "StaticLinkList.h"
-
+#include "SharedPointer.h"
 
 using namespace std;
 using namespace JSLib;
