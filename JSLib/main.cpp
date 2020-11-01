@@ -1,5 +1,5 @@
 #include <iostream>
-#include "CircleList.h"
+#include "DualLinkList.h"
 
 using namespace std;
 using namespace JSLib;
