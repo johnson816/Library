@@ -52,6 +52,8 @@ public:
     {
         m_header.next = NULL;
         m_length = 0;
+        m_current = NULL;
+        m_step = 1;
     }
 
     bool insert(const T& obj)
