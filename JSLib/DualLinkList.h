@@ -72,8 +72,8 @@ public:
             Node* tem = creat();
             if(tem != NULL)
             {
-                Node* current = position(i);
-                Node* next = current->next;
+                Node* current = position(i);              //待插入位置的上一个结点
+                Node* next = current->next;               //待插入的位置的下一个结点
 
                 tem->value = obj;
                 tem->next = next;
