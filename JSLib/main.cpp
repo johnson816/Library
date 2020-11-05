@@ -1,10 +1,8 @@
 #include <iostream>
-#include "DualLinkList.h"
+#include "DualCircleList.h"
 
 using namespace std;
 using namespace JSLib;
-
-
 
 int main()
 {
