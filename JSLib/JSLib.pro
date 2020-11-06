@@ -24,5 +24,8 @@ HEADERS += \
     CircleList.h \
     DualLinkList.h \
     LinuxList.h \
-    DualCircleList.h
+    DualCircleList.h \
+    Stack.h \
+    StaticStack.h \
+    LinkStack.h
 
