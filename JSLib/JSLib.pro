@@ -27,5 +27,8 @@ HEADERS += \
     DualCircleList.h \
     Stack.h \
     StaticStack.h \
-    LinkStack.h
+    LinkStack.h \
+    Queue.h \
+    StaticQueue.h \
+    LinkQueue.h
 
