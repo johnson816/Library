@@ -4,7 +4,8 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     Exception.cpp \
-    Object.cpp
+    Object.cpp \
+    JSString.cpp
 
 HEADERS += \
     SmartPointer.h \
@@ -30,5 +31,6 @@ HEADERS += \
     LinkStack.h \
     Queue.h \
     StaticQueue.h \
-    LinkQueue.h
+    LinkQueue.h \
+    JSString.h
 
