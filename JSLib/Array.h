@@ -22,6 +22,7 @@ public:
         }
         return ret;
     }
+
     bool get(int i,T& obj) const
     {
         bool ret = ((0 <= i) && (i < this->length()));
@@ -31,6 +32,7 @@ public:
         }
         return ret;
     }
+
     T& operator [](int i)
     {
         if((0 <= i) && (i < this->length()))
@@ -42,10 +44,17 @@ public:
             THROWEXCEPTION(IndexOutOfBoundsException,"Parameter i is invalid");
         }
     }
+
     T operator[](int i) const
     {
         return (const_cast<Array<T>&>(*this))[i];
     }
+
+    T* array()const
+    {
+        return m_array;
+    }
+
     virtual int length() const = 0;
 };
 
