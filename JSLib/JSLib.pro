@@ -33,5 +33,7 @@ HEADERS += \
     StaticQueue.h \
     LinkQueue.h \
     JSString.h \
-    Sort.h
+    Sort.h \
+    Tree.h \
+    TreeNode.h
 
