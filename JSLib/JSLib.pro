@@ -35,5 +35,7 @@ HEADERS += \
     JSString.h \
     Sort.h \
     Tree.h \
-    TreeNode.h
+    TreeNode.h \
+    GTreeNode.h \
+    GTree.h
 
