@@ -1,6 +1,5 @@
 #include <iostream>
-#include "GTreeNode.h"
-#include "GTree.h"
+#include "BTree.h"
 
 using namespace std;
 using namespace JSLib;
@@ -9,49 +8,59 @@ using namespace JSLib;
 
 int main()
 {
-    GTreeNode<char>* tn = NULL;
-    GTree<char> tt;
 
-    GTreeNode<char> gtn;
-    gtn.value = 'A';
-
-    tt.insert(&gtn);
-    tn = tt.find('A');
-    tt.insert('B',tn);
-    tt.insert('C',tn);
-    tt.insert('D',tn);
+    BTree<int>bt;
+    TreeNode<int>* btn = NULL;
 
 
-    tn = tt.find('B');
-    tt.insert('E',tn);
-    tt.insert('F',tn);
+    bt.insert(1,NULL);
 
+    btn = bt.find(1);
+    bt.insert(2,btn);
+    bt.insert(3,btn);
 
+    btn = bt.find(2);
+    bt.insert(4,btn);
+    bt.insert(5,btn);
 
-    tn = tt.find('E');
-    tt.insert('K',tn);
-    tt.insert('L',tn);
+    btn = bt.find(4);
+    bt.insert(8,btn);
+    bt.insert(9,btn);
 
-    tn = tt.find('C');
-    tt.insert('G',tn);
+    btn = bt.find(5);
+    bt.insert(10,btn);
 
-    tn = tt.find('D');
-    tt.insert('H',tn);
-    tt.insert('I',tn);
-    tt.insert('J',tn);
+    btn = bt.find(3);
+    bt.insert(6,btn);
+    bt.insert(7,btn);
 
+    cout << bt.count() << endl;
+    cout << bt.height() << endl;
+    cout << bt.degree() << endl;
 
-    tn = tt.find('H');
-    tt.insert('M',tn);
+    //SharedPointer< Tree<int> > sp = bt.remove(3);
+/*
+    int a[] = {8,9,10,11,7};
 
-    cout << tt.count() << endl;
-    cout << tt.height() << endl;
-    cout << tt.degree() << endl;
-
-    for(tt.begin();!tt.end();tt.next())
+    for(int i=0;i<5;i++)
     {
-        cout << tt.current() << endl;
+        TreeNode<int>* node = bt.find(a[i]);
+
+        while( node )
+        {
+            //cout << node->value << " ";
+            node = node->parent;
+        }
+
+        //cout << endl;
+    }*/
+
+    for(bt.begin();!bt.end();bt.next())
+    {
+        cout << bt.current() << " ";
+
     }
+    cout << endl;
     return 0;
 }
 
