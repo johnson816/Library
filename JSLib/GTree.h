@@ -15,9 +15,6 @@ class GTree : public Tree<T>
 protected:
     LinkQueue< GTreeNode<T>* > m_queue;                     //利用队列实现树的层次遍历
 
-    GTree(const GTree<T>&);
-    GTree<T>& operator =(const GTree<T>&);
-
     /**
      **在树中从node节点开始查找，查找值为value的节点，并将该节点的地址返回
      **/

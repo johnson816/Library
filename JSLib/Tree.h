@@ -13,6 +13,9 @@ class Tree : public Object
 {
 protected:
     TreeNode<T>* m_root;                                         // 指向根节点的指针
+
+    Tree(const Tree<T>&);
+    Tree<T>& operator =(const Tree<T>&);
 public:
     Tree() { m_root = NULL;}
     virtual bool insert(TreeNode<T>* node) = 0;
@@ -26,6 +29,10 @@ public:
     virtual int count() const = 0;
     virtual int height() const = 0;
     virtual void clear() = 0;
+    virtual bool begin() = 0;
+    virtual bool end() = 0;
+    virtual bool next() = 0;
+    virtual T current() = 0;
 };
 
 }
