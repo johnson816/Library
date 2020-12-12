@@ -38,29 +38,45 @@ int main()
     cout << bt.height() << endl;
     cout << bt.degree() << endl;
 
-    //SharedPointer< Tree<int> > sp = bt.remove(3);
+    BTree<int> addbt;
+
+    addbt.insert(0,NULL);
+
+    btn = addbt.find(0);
+    addbt.insert(6,btn);
+    addbt.insert(2,btn);
+
+    btn = addbt.find(2);
+    addbt.insert(7,btn);
+    addbt.insert(8,btn);
+
+    SharedPointer< BTree<int> > sp = bt.add(addbt);
+
+    SharedPointer< Array<int> > n = sp->traversal(PreOrder);
+
+    for(int i=0;i<n->length();i++)
+    {
+        cout << (*n)[i] << " ";
+    }
+    cout << endl;
 /*
-    int a[] = {8,9,10,11,7};
+    int a[] = {8,9,10,13,15};
 
     for(int i=0;i<5;i++)
     {
-        TreeNode<int>* node = bt.find(a[i]);
+        TreeNode<int>* node = sp->find(a[i]);
 
         while( node )
         {
-            //cout << node->value << " ";
+            cout << node->value << " ";
             node = node->parent;
         }
 
-        //cout << endl;
+        cout << endl;
     }*/
 
-    for(bt.begin();!bt.end();bt.next())
-    {
-        cout << bt.current() << " ";
 
-    }
-    cout << endl;
+
     return 0;
 }
 

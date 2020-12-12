@@ -6,10 +6,24 @@
 #include "BTreeNode.h"
 #include "Exception.h"
 #include "LinkQueue.h"
-
+#include "DynamicArray.h"
 
 namespace JSLib
 {
+
+
+/**
+ **该枚举类型定义了二叉树的其他典型遍历方式。
+ **PreOrder表示先序遍历。
+ **InOrder表示中序遍历。
+ **PostOrder表示后序遍历
+ **/
+enum BTTraversal
+{
+    PreOrder,
+    InOrder,
+    PostOrder
+};
 
 template < typename T>
 class BTree : public Tree<T>
@@ -227,6 +241,149 @@ protected:
 
         return ret;
 
+    }
+
+    /**
+     **二叉树先序遍历
+     **/
+    void preOrderTraversal(BTreeNode<T>* node,LinkQueue< BTreeNode<T>* >& queue)
+    {
+        if( node != NULL )
+        {
+            queue.add(node);
+            preOrderTraversal(node->left,queue);
+            preOrderTraversal(node->right,queue);
+        }
+    }
+
+    /**
+     **二叉树中序遍历
+     **/
+    void inOrderTraversal(BTreeNode<T>* node,LinkQueue< BTreeNode<T>* >& queue)
+    {
+        if( node != NULL )
+        {
+            inOrderTraversal(node->left,queue);
+            queue.add(node);
+            inOrderTraversal(node->right,queue);
+        }
+    }
+
+    /**
+     **二叉树后序遍历
+     **/
+    void postOrderTraversal(BTreeNode<T>* node,LinkQueue< BTreeNode<T>* >& queue)
+    {
+        if( node != NULL )
+        {
+            postOrderTraversal(node->left,queue);
+            postOrderTraversal(node->right,queue);
+            queue.add(node);
+        }
+    }
+
+    /**
+     **拷贝以node节点为根节点的二叉树
+     **/
+    BTreeNode<T>* clone(BTreeNode<T>* node) const
+    {
+        BTreeNode<T>* ret = BTreeNode<T>::NewNode();
+
+        if( ret != NULL )
+        {
+            if( node != NULL )
+            {
+                ret->value = node->value;
+                ret->left = clone(node->left);
+                ret->right = clone(node->right);
+
+                if( ret->left != NULL )
+                {
+                    ret->left->parent = ret;
+                }
+
+                if( ret->right != NULL )
+                {
+                    ret->right->parent = ret;
+                }
+            }
+            else
+            {
+                ret = NULL;
+            }
+        }
+        else
+        {
+            THROWEXCEPTION(NoEnoughMemoryException,"No memory to creat BTreeNode");
+        }
+
+        return ret;
+
+
+    }
+
+    /**
+     **判断lh为根节点的二叉树和rh为根节点的二叉树是否相等
+     **/
+    bool equal(BTreeNode<T>* lh,BTreeNode<T>* rh)
+    {
+        if( lh == rh )
+        {
+            return true;
+        }
+        else if( (lh != NULL ) && (rh != NULL ) )
+        {
+            return ((lh->value == rh->value) && (equal(lh->left,rh->left)) && (equal(lh->right,rh->right)));
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     **将lh为根节点的二叉树和rh为根节点的二叉树相加，返回相加后的二叉树
+     **/
+    BTreeNode<T>* add(BTreeNode<T>* lh,BTreeNode<T>* rh) const
+    {
+        BTreeNode<T>* ret = NULL;
+
+        if( (lh != NULL) && (rh == NULL) )
+        {
+            ret = clone(lh);
+        }
+        else if( (lh == NULL) && (rh != NULL) )
+        {
+            ret = clone(rh);
+        }
+        else if( (lh != NULL) && (rh != NULL))
+        {
+            ret = BTreeNode<T>::NewNode();
+
+            if( ret != NULL )
+            {
+                ret->value = lh->value + rh->value;
+                ret->left = add(lh->left,rh->left);
+                ret->right = add(lh->right,rh->right);
+
+                if( ret->left != NULL )
+                {
+                    ret->left->parent = ret;
+                }
+
+                if( ret->right != NULL )
+                {
+                    ret->right->parent = ret;
+                }
+            }
+            else
+            {
+                THROWEXCEPTION(NoEnoughMemoryException,"No memory to creat BTreeNode");
+            }
+
+        }
+
+        return ret;
     }
 
 public:
@@ -458,6 +615,87 @@ public:
         }
 
 
+    }
+
+    SharedPointer< Array<T> > traversal(BTTraversal order)
+    {
+        DynamicArray<T>* ret = NULL;
+        LinkQueue< BTreeNode<T>* > queue;
+
+        switch(order)
+        {
+        case PreOrder:
+            preOrderTraversal(root(),queue);
+            break;
+        case InOrder:
+            inOrderTraversal(root(),queue);
+            break;
+        case PostOrder:
+            postOrderTraversal(root(),queue);
+            break;
+        default:
+            THROWEXCEPTION(InvalidParameterException,"Parameter order is invalid");
+            break;
+        }
+
+        ret = new DynamicArray<T>(queue.length());
+
+        if( ret != NULL )
+        {
+            for(int i=0;i<ret->length();i++,queue.remove())
+            {
+                ret->set(i,queue.front()->value);
+            }
+        }
+        else
+        {
+            THROWEXCEPTION(NoEnoughMemoryException,"No memory to creat return array");
+        }
+
+        return ret;
+
+    }
+
+    SharedPointer< BTree<T> > clone()const
+    {
+        BTree<T>* ret = new BTree<T>();
+
+        if( ret != NULL )
+        {
+            ret->m_root = clone(root());
+        }
+        else
+        {
+            THROWEXCEPTION(NoEnoughMemoryException,"No memory to creat BTree Node");
+        }
+
+        return ret;
+    }
+
+    bool operator == (const BTree<T>& btree)
+    {
+        return (equal(root(),btree.root()));
+    }
+
+    bool operator != (const BTree<T>& btree)
+    {
+        return !(*this == btree);
+    }
+
+    SharedPointer< BTree<T> > add(const BTree<T>& btree) const
+    {
+        BTree<T>* ret = new BTree<T>();
+
+        if( ret != NULL )
+        {
+            ret->m_root= add(root(),btree.root());
+        }
+        else
+        {
+            THROWEXCEPTION(NoEnoughMemoryException,"No memory to creat BTree");
+        }
+
+        return ret;
     }
 
     ~BTree()
