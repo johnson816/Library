@@ -17,12 +17,14 @@ namespace JSLib
  **PreOrder表示先序遍历。
  **InOrder表示中序遍历。
  **PostOrder表示后序遍历
+ **LevelOrder表示层次遍历
  **/
 enum BTTraversal
 {
     PreOrder,
     InOrder,
-    PostOrder
+    PostOrder,
+    LevelOrder
 };
 
 template < typename T>
@@ -283,6 +285,38 @@ protected:
     }
 
     /**
+     **二叉树层次遍历，把遍历之后的节点有序的放入队queue中
+     **/
+    void leverOrderTraversal(BTreeNode<T>* node,LinkQueue< BTreeNode<T>* >& queue)
+    {
+        if( node != NULL )
+        {
+            LinkQueue<BTreeNode<T>*> tem;
+
+            tem.add(node);
+
+            while( tem.length() > 0 )
+            {
+                BTreeNode<T>* n = tem.front();
+
+                if( n->left != NULL )
+                {
+                    tem.add(n->left);
+                }
+
+                if( n->right != NULL )
+                {
+                    tem.add(n->right);
+                }
+
+                tem.remove();
+                queue.add(n);
+            }
+
+        }
+    }
+
+    /**
      **拷贝以node节点为根节点的二叉树
      **/
     BTreeNode<T>* clone(BTreeNode<T>* node) const
@@ -381,6 +415,60 @@ protected:
                 THROWEXCEPTION(NoEnoughMemoryException,"No memory to creat BTreeNode");
             }
 
+        }
+
+        return ret;
+    }
+
+    /**
+     **遍历功能函数，遍历方式为order，遍历后的节点放入queue中
+     **/
+    void traversal(BTTraversal order,LinkQueue<BTreeNode<T>*>& queue)
+    {
+        switch(order)
+        {
+        case PreOrder:
+            preOrderTraversal(root(),queue);
+            break;
+        case InOrder:
+            inOrderTraversal(root(),queue);
+            break;
+        case PostOrder:
+            postOrderTraversal(root(),queue);
+            break;
+        case LevelOrder:
+            leverOrderTraversal(root(),queue);
+            break;
+        default:
+            THROWEXCEPTION(InvalidParameterException,"Parameter order is invalid");
+            break;
+        }
+    }
+
+    /**
+     **将队列queue中的二叉树节点链接成双向链表，返回指向双向链表头节点的指针
+     **/
+    BTreeNode<T>* connet(LinkQueue<BTreeNode<T>*>& queue)
+    {
+        BTreeNode<T>* ret = NULL;
+
+        if( queue.length() > 0 )
+        {
+            ret = queue.front();
+
+            BTreeNode<T>* slide = queue.front();
+            queue.remove();
+            slide->left = NULL;
+
+            while( queue.length() > 0 )
+            {
+                slide->right = queue.front();
+                queue.front()->left = slide;
+                slide = queue.front();
+                queue.remove();
+            }
+
+            slide->right = NULL;
         }
 
         return ret;
@@ -622,21 +710,7 @@ public:
         DynamicArray<T>* ret = NULL;
         LinkQueue< BTreeNode<T>* > queue;
 
-        switch(order)
-        {
-        case PreOrder:
-            preOrderTraversal(root(),queue);
-            break;
-        case InOrder:
-            inOrderTraversal(root(),queue);
-            break;
-        case PostOrder:
-            postOrderTraversal(root(),queue);
-            break;
-        default:
-            THROWEXCEPTION(InvalidParameterException,"Parameter order is invalid");
-            break;
-        }
+        traversal(order,queue);
 
         ret = new DynamicArray<T>(queue.length());
 
@@ -694,6 +768,24 @@ public:
         {
             THROWEXCEPTION(NoEnoughMemoryException,"No memory to creat BTree");
         }
+
+        return ret;
+    }
+
+    /**
+     **将二叉树线索化函数，返回指向双向链表头节点的指针
+     **/
+    BTreeNode<T>* thread(BTTraversal order)
+    {
+        BTreeNode<T>* ret = NULL;
+        LinkQueue<BTreeNode<T>*> queue;
+
+        traversal(order,queue);
+
+        ret = connet(queue);
+
+        this->m_root = NULL;
+        queue.clear();
 
         return ret;
     }
